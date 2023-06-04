@@ -1,68 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
 import * as S from "./index.style.js";
+import { useForm } from "react-hook-form";
 
 const New = () => {
-  // 1. 정상적으로 다 입력돼있으면 게시글이 등록되었습니다.
-  // 2. 빈칸이면 제목을 입력해주세요. + 다시 입력하면 에러내용 제거
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-  const [writer, setWriter] = useState(""); // 작성자
-  const [password, setPassword] = useState(""); // 비밀번호
-  const [title, setTitle] = useState(""); // 제목
-  const [content, setContent] = useState(""); // 내용
-
-  const [writerError, setWriterError] = useState(""); // 작성자
-  const [passwordError, setPasswordError] = useState(""); // 비밀번호
-  const [titleError, setTitleError] = useState(""); // 제목
-  const [contentError, setContentError] = useState(""); // 내용
-
-  const onChangeWriter = (e) => {
-    setWriter(e.target.value);
-    if (e.target.value != "") {
-      setWriterError("");
-    }
-  };
-
-  const onChangePassword = (e) => {
-    setPassword(e.target.value);
-    if (e.target.value != "") {
-      setPasswordError("");
-    }
-  };
-
-  const onChangeTitle = (e) => {
-    setTitle(e.target.value);
-    if (e.target.value != "") {
-      setTitleError("");
-    }
-  };
-
-  const onChangeContent = (e) => {
-    setContent(e.target.value);
-    if (e.target.value != "") {
-      setContentError("");
-    }
-  };
-
-  const handleSubmit = () => {
-    if (!writer) {
-      setWriterError("이름을 입력해주세요.");
-    }
-
-    if (!password) {
-      setPasswordError("비밀번호를 입력해주세요.");
-    }
-
-    if (!title) {
-      setTitleError("제목을 입력해주세요.");
-    }
-
-    if (!content) {
-      setContentError("내용을 입력해주세요.");
-    }
-
-    if (writer && password && title && content) {
-      alert("게시글이 등록되었습니다.");
-    }
+  const onSubmit = () => {
+    alert("게시글이 등록되었습니다.");
   };
 
   return (
@@ -74,18 +22,22 @@ const New = () => {
           <S.Input
             type="text"
             placeholder="이름을 적어주세요."
-            onChange={onChangeWriter}
+            {...register("writer", { required: true })}
           />
-          <S.ErrorMsg>{writerError}</S.ErrorMsg>
+          {errors && errors.writer && (
+            <S.ErrorMsg>이름을 입력해주세요.</S.ErrorMsg>
+          )}
         </S.Box>
         <S.Box>
           <S.Label>비밀번호</S.Label>
           <S.Input
             type="password"
             placeholder="비밀번호를 입력해주세요."
-            onChange={onChangePassword}
+            {...register("password", { required: true })}
           />
-          <S.ErrorMsg>{passwordError}</S.ErrorMsg>
+          {errors && errors.password && (
+            <S.ErrorMsg>비밀번호를 입력해주세요.</S.ErrorMsg>
+          )}
         </S.Box>
       </S.InputBox>
       <S.Box>
@@ -93,17 +45,21 @@ const New = () => {
         <S.Input
           type="text"
           placeholder="제목을 작성해주세요."
-          onChange={onChangeTitle}
+          {...register("title", { required: true })}
         />
-        <S.ErrorMsg>{titleError}</S.ErrorMsg>
+        {errors && errors.title && (
+          <S.ErrorMsg>제목을 입력해주세요.</S.ErrorMsg>
+        )}
       </S.Box>
       <S.Box>
         <S.Label>내용</S.Label>
         <S.TextArea
           placeholder="내용을 작성해주세요."
-          onChange={onChangeContent}
+          {...register("content", { required: true })}
         />
-        <S.ErrorMsg>{contentError}</S.ErrorMsg>
+        {errors && errors.content && (
+          <S.ErrorMsg>내용을 작성해주세요.</S.ErrorMsg>
+        )}
       </S.Box>
       <S.Box>
         <S.Label>주소</S.Label>
@@ -148,7 +104,7 @@ const New = () => {
         <S.RadioInput type="radio" id="pic" name="main" value="사진" />
         <S.RadioLabel for="pic">사진</S.RadioLabel>
       </S.Box>
-      <S.SubmitButton onClick={handleSubmit}>등록하기</S.SubmitButton>
+      <S.SubmitButton onClick={handleSubmit(onSubmit)}>등록하기</S.SubmitButton>
     </S.Wrapper>
   );
 };
