@@ -3,6 +3,7 @@ import * as S from "./index.style.js";
 import { useForm } from "react-hook-form";
 import { gql } from "@apollo/client";
 import { useMutation } from "@apollo/client";
+import { useRouter } from "next/router";
 
 const CREATE_BOARD = gql`
   mutation createBoard($createBoardInput: CreateBoardInput!) {
@@ -16,6 +17,7 @@ const CREATE_BOARD = gql`
 `;
 
 const New = () => {
+  const router = useRouter();
   const [createBoard] = useMutation(CREATE_BOARD);
 
   const {
@@ -38,6 +40,7 @@ const New = () => {
       },
     });
     console.log(result);
+    router.push(`/boards/${result.data.createBoard._id}`);
   };
 
   return (
