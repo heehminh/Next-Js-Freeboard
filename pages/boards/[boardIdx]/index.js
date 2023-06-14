@@ -15,11 +15,15 @@ const FETCH_BOARD = gql`
 const index = () => {
   const router = useRouter();
 
-  const { data } = useQuery(FETCH_BOARD, {
-    variables: { boardId: router.query.boardIdx },
-  });
+  try {
+    const { data } = useQuery(FETCH_BOARD, {
+      variables: { boardId: router.query.boardIdx },
+    });
 
-  console.log(data);
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+  }
 
   return <div>{data?.fetchBoard?.title}</div>;
 };

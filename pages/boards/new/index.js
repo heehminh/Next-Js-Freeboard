@@ -29,18 +29,22 @@ const New = () => {
   const onSubmit = async (data) => {
     const { writer, password, title, contents } = data;
 
-    const result = await createBoard({
-      variables: {
-        createBoardInput: {
-          writer,
-          password,
-          title,
-          contents,
+    try {
+      const result = await createBoard({
+        variables: {
+          createBoardInput: {
+            writer,
+            password,
+            title,
+            contents,
+          },
         },
-      },
-    });
-    console.log(result);
-    router.push(`/boards/${result.data.createBoard._id}`);
+      });
+      console.log(result);
+      router.push(`/boards/${result.data.createBoard._id}`);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
