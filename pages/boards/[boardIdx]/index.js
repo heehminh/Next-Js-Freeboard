@@ -1,10 +1,27 @@
 import React from "react";
 import { useRouter } from "next/router";
+import { useQuery, gql } from "@apollo/client";
+
+const FETCH_BOARD = gql`
+  query fetchBoard($boardId: ID!) {
+    fetchBoard(boardId: $boardId) {
+      writer
+      title
+      contents
+    }
+  }
+`;
 
 const index = () => {
   const router = useRouter();
 
-  return <div>{router?.query.boardIdx}</div>;
+  const { data } = useQuery(FETCH_BOARD, {
+    variables: { boardId: router.query.boardIdx },
+  });
+
+  console.log(data);
+
+  return <div>{data?.fetchBoard?.title}</div>;
 };
 
 export default index;
